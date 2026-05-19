@@ -1,80 +1,70 @@
-import entity.Transaction;
+import controller.TransactionController;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
     static Scanner sc = new Scanner(System.in);
-    static List<Transaction> transactionList = new ArrayList<>();
+    static TransactionController transactionController = new TransactionController();
 
     public static void main(String[] args) {
 
-        while (true){
-            System.out.println("Welcome to Console Based Finance Tracking");
-            System.out.println("1. Add new Transaction");
-            System.out.println("2. View all Transaction");
-            System.out.println("3. Exit\n");
+        boolean running = true;
 
-            System.out.println("Enter your choice:");
+        while (running) {
+            showMenu();
+
+            System.out.print("Enter your choice: ");
+
+            if (!sc.hasNextInt()) {
+                System.out.println("\nInvalid input. Please enter a number.");
+                sc.nextLine();
+                pause();
+                continue;
+            }
+
             int input = sc.nextInt();
             sc.nextLine();
 
-            switch(input){
-
+            switch (input) {
                 case 1:
-                    addTransaction();
+                    transactionController.addNewTransaction();
+                    pause();
                     break;
 
                 case 2:
-                    viewAllTransaction();
-                    System.out.println("Viewed all transaction");
+                    transactionController.viewAllTransaction();
+                    pause();
                     break;
 
                 case 3:
-                    System.out.println("Exiting....");
-                    return;
+                    System.out.println("\nThank you for using Console Finance Tracker.");
+                    System.out.println("Exiting...");
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println("\nInvalid choice. Please choose between 1 and 3.");
+                    pause();
+                    break;
             }
         }
 
+        sc.close();
     }
 
-    static void addTransaction(){
-        Transaction t = new Transaction();
-
-        System.out.println("Add new Transaction\n");
-
-        System.out.println("Enter id: ");
-        int id = sc.nextInt();
-        t.setId(id);
-        sc.nextLine();
-
-        System.out.println("Enter title: ");
-        String title = sc.nextLine();
-        t.setTitle(title);
-
-        System.out.println("Enter amount: ");
-        double amount = sc.nextDouble();
-        sc.nextLine();
-        t.setAmount(amount);
-
-        System.out.println("Enter category: ");
-        String category = sc.next();
-        t.setCategory(category);
-
-        LocalDate currentDate = LocalDate.now();
-        t.setDate(currentDate);
-
-        System.out.println("Enter description: ");
-        String description = sc.next();
-        t.setDescription(description);
-
-        transactionList.add(t);
+    public static void showMenu() {
+        System.out.println("\n========================================");
+        System.out.println("        CONSOLE FINANCE TRACKER");
+        System.out.println("========================================");
+        System.out.println("1. Add New Transaction");
+        System.out.println("2. View All Transactions");
+        System.out.println("3. Exit");
+        System.out.println("----------------------------------------");
     }
 
-    static void viewAllTransaction(){
-        System.out.println(transactionList);
+    public static void pause() {
+        System.out.println("\nPress Enter to continue...");
+        sc.nextLine();
     }
 }
