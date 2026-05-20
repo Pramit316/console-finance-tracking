@@ -1,11 +1,15 @@
+import controller.SearchFilterController;
 import controller.TransactionController;
+import service.TransactionService;
 
 import java.util.Scanner;
 
 public class Main {
 
     static Scanner sc = new Scanner(System.in);
-    static TransactionController transactionController = new TransactionController();
+    static TransactionService transactionService = new TransactionService();
+    static TransactionController transactionController = new TransactionController(transactionService);
+    static SearchFilterController searchFilterController = new SearchFilterController(transactionService);
 
     public static void main(String[] args) {
 
@@ -38,6 +42,11 @@ public class Main {
                     break;
 
                 case 3:
+                    searchFilterController.searchFilterMenu();
+                    pause();
+                    break;
+
+                case 4:
                     System.out.println("\nThank you for using Console Finance Tracker.");
                     System.out.println("Exiting...");
                     running = false;
@@ -59,7 +68,8 @@ public class Main {
         System.out.println("========================================");
         System.out.println("1. Add New Transaction");
         System.out.println("2. Transactions Menu");
-        System.out.println("3. Exit");
+        System.out.println("3. Search and Filter");
+        System.out.println("4. Exit");
         System.out.println("----------------------------------------");
     }
 

@@ -5,7 +5,10 @@ import entity.TransactionType;
 import exceptions.InvalidAmountException;
 import exceptions.TransactionNotFoundException;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class TransactionService {
@@ -46,9 +49,9 @@ public class TransactionService {
         t.setAmount(amount);
     }
 
-    public void updateCategory(int id, TransactionType transactionType) {
+    public void updateType(int id, TransactionType transactionType) {
         Transaction t = findTransactionById(id);
-        t.setCategory(String.valueOf(transactionType));
+        t.setType(transactionType);
     }
 
     public void updateDescription(int id, String description) {
@@ -68,5 +71,25 @@ public class TransactionService {
         tNew.setDescription(t.getDescription());
         tNew.setType(t.getType());
         tNew.setCategory(t.getCategory());
+    }
+
+    public List<Transaction> searchByType(TransactionType type) {
+        return transactionList.stream().filter(x -> x.getType().equals(type)).toList();
+    }
+
+    public List<Transaction> sortedByAmountScreen() {
+        return transactionList.stream().sorted(Comparator.comparingInt(Transaction::getId)).toList().reversed();
+    }
+
+    public List<Transaction> searchByAmountRange(double lower, double upper) {
+        return transactionList.stream().filter(x -> x.getAmount() >= lower && x.getAmount() <= upper ).toList();
+    }
+
+    public List<Transaction> sortedByDate() {
+        return transactionList.stream().sorted(Comparator.comparing(Transaction::getDate)).toList();
+    }
+
+    public List<Transaction> searchByDate(LocalDate date) {
+        return transactionList.stream().filter(x-> x.getDate().equals(date)).toList();
     }
 }
