@@ -33,7 +33,7 @@ public class Main {
                     break;
 
                 case 2:
-                    transactionController.viewAllTransaction();
+                    transactionController.transactionMenu();
                     pause();
                     break;
 
@@ -58,7 +58,7 @@ public class Main {
         System.out.println("        CONSOLE FINANCE TRACKER");
         System.out.println("========================================");
         System.out.println("1. Add New Transaction");
-        System.out.println("2. View All Transactions");
+        System.out.println("2. Transactions Menu");
         System.out.println("3. Exit");
         System.out.println("----------------------------------------");
     }
