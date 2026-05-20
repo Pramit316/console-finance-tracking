@@ -129,20 +129,8 @@ public class TransactionController {
             return;
         }
 
-        System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
-                "ID", "TITLE", "AMOUNT", "CATEGORY", "DATE", "DESCRIPTION");
+        consolePrint(transactionList);
 
-        System.out.println("--------------------------------------------------------------------------------");
-
-        for (Transaction t : transactionList) {
-            System.out.printf("%-5d %-15s %-10.2f %-15s %-15s %-20s%n",
-                    t.getId(),
-                    t.getTitle(),
-                    t.getAmount(),
-                    t.getCategory(),
-                    t.getDate(),
-                    t.getDescription());
-        }
     }
 
     public void showFindTransactionByIdScreen() {
@@ -155,9 +143,11 @@ public class TransactionController {
         int id = sc.nextInt();
         sc.nextLine();
 
-        // transactionService.findTransactionById(id);
+        Transaction t = transactionService.findTransactionById(id);
 
         System.out.println("\nSearching transaction with ID: " + id);
+
+        consolePrint(t);
     }
 
     public void showDeleteTransactionScreen() {
@@ -206,5 +196,36 @@ public class TransactionController {
     public void pause() {
         System.out.println("\nPress Enter to continue...");
         sc.nextLine();
+    }
+
+    public void consolePrint(Transaction t){
+        System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
+                "ID", "TITLE", "AMOUNT", "CATEGORY", "DATE", "DESCRIPTION");
+
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.printf("%-5d %-15s %-10.2f %-15s %-15s %-20s%n",
+                t.getId(),
+                t.getTitle(),
+                t.getAmount(),
+                t.getCategory(),
+                t.getDate(),
+                t.getDescription());
+    }
+
+    public void consolePrint(List<Transaction> transactionList){
+        System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
+                "ID", "TITLE", "AMOUNT", "CATEGORY", "DATE", "DESCRIPTION");
+
+        System.out.println("--------------------------------------------------------------------------------");
+
+        for (Transaction t : transactionList) {
+            System.out.printf("%-5d %-15s %-10.2f %-15s %-15s %-20s%n",
+                    t.getId(),
+                    t.getTitle(),
+                    t.getAmount(),
+                    t.getCategory(),
+                    t.getDate(),
+                    t.getDescription());
+        }
     }
 }

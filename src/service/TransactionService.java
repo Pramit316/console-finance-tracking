@@ -21,4 +21,8 @@ public class TransactionService {
     public List<Transaction> getAllTransactions(){
         return transactionList;
     }
+
+    public Transaction findTransactionById(int id) {
+        return transactionList.stream().filter(x-> x.getId() == id).findFirst().orElse(null);
+    }
 }
