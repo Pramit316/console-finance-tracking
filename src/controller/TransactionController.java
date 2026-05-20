@@ -14,7 +14,11 @@ import java.util.Scanner;
 public class TransactionController {
 
     private final Scanner sc = new Scanner(System.in);
-    private final TransactionService transactionService = new TransactionService();
+    private final TransactionService transactionService;
+
+    public TransactionController(TransactionService transactionService){
+        this.transactionService = transactionService;
+    }
 
     public void addNewTransaction() {
 
@@ -39,14 +43,14 @@ public class TransactionController {
             sc.nextLine();
             t.setAmount(amount);
 
-            System.out.println("Select Category: ");
+            System.out.println("Select Type: ");
             System.out.println("1. Income");
             System.out.println("2. Expense");
             System.out.print("Enter choice: ");
-            int category = sc.nextInt();
+            int type = sc.nextInt();
             sc.nextLine();
 
-            t.setCategory(String.valueOf(category == 1 ? TransactionType.INCOME : TransactionType.EXPENSE));
+            t.setType(type == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
 
             LocalDate currentDate = LocalDate.now();
             t.setDate(currentDate);
@@ -191,7 +195,7 @@ public class TransactionController {
            System.out.println("\nWhat do you want to update?");
            System.out.println("1. Title");
            System.out.println("2. Amount");
-           System.out.println("3. Category");
+           System.out.println("3. Type");
            System.out.println("4. Description");
            System.out.println("5. Update Full Transaction");
            System.out.println("6. Cancel");
@@ -214,14 +218,14 @@ public class TransactionController {
                    break;
 
                case 3:
-                   System.out.print("Select the category: ");
+                   System.out.print("Select the Type: ");
                    System.out.println("1. Income");
                    System.out.println("2. Expense");
                    System.out.print("Enter your choice");
                    int input = sc.nextInt();
                    sc.nextLine();
 
-                   transactionService.updateCategory(id, input == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
+                   transactionService.updateType(id, input == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
                    break;
 
                case 4:
@@ -262,14 +266,14 @@ public class TransactionController {
         sc.nextLine();
         t.setAmount(amount);
 
-        System.out.println("Select Category: ");
+        System.out.println("Select Type: ");
         System.out.println("1. Income");
         System.out.println("2. Expense");
         System.out.print("Enter choice: ");
-        int category = sc.nextInt();
+        int type = sc.nextInt();
         sc.nextLine();
 
-        t.setCategory(String.valueOf(category == 1 ? TransactionType.INCOME : TransactionType.EXPENSE));
+        t.setType(type == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
 
         LocalDate currentDate = LocalDate.now();
         t.setDate(currentDate);
@@ -291,23 +295,23 @@ public class TransactionController {
     //single result in a table
     public void consolePrint(Transaction t){
         System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
-                "ID", "TITLE", "AMOUNT", "CATEGORY", "DATE", "DESCRIPTION");
+                "ID", "TITLE", "AMOUNT", "TYPE", "DATE", "DESCRIPTION");
 
         System.out.println("--------------------------------------------------------------------------------");
         System.out.printf("%-5d %-15s %-10.2f %-15s %-15s %-20s%n",
                 t.getId(),
                 t.getTitle(),
                 t.getAmount(),
-                t.getCategory(),
+                t.getType(),
                 t.getDate(),
                 t.getDescription());
     }
 
 
     //List of results in a table
-    public void consolePrint(List<Transaction> transactionList){
+    public static void consolePrint(List<Transaction> transactionList){
         System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
-                "ID", "TITLE", "AMOUNT", "CATEGORY", "DATE", "DESCRIPTION");
+                "ID", "TITLE", "AMOUNT", "TYPE", "DATE", "DESCRIPTION");
 
         System.out.println("--------------------------------------------------------------------------------");
 
@@ -316,7 +320,7 @@ public class TransactionController {
                     t.getId(),
                     t.getTitle(),
                     t.getAmount(),
-                    t.getCategory(),
+                    t.getType(),
                     t.getDate(),
                     t.getDescription());
         }
