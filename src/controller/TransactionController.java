@@ -52,7 +52,8 @@ public class TransactionController {
 
             t.setType(type == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
 
-            LocalDate currentDate = LocalDate.now();
+            System.out.println("Enter the date in yyyy-mm-dd: ");
+            LocalDate currentDate = LocalDate.parse(sc.nextLine());
             t.setDate(currentDate);
 
             System.out.print("Enter Description: ");

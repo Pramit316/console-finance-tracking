@@ -57,24 +57,63 @@ public class ReportService {
 
     public void monthlySummary() {
         List<Transaction> transactionList = getTransactionList();
-        System.out.println(
-                transactionList.stream()
-                        .collect(Collectors.groupingBy(
-                                t -> YearMonth.from(t.getDate()),
-                                Collectors.summingDouble(Transaction::getAmount)
-                        ))
-        );
+        Map<YearMonth, Double> income = transactionList.stream()
+                .filter(x -> x.getType().equals(TransactionType.INCOME))
+                .collect(Collectors.groupingBy(
+                        t -> YearMonth.from(t.getDate()),
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+        Map<YearMonth, Double> expense = transactionList.stream()
+                .filter(x -> x.getType().equals(TransactionType.EXPENSE))
+                .collect(Collectors.groupingBy(
+                        t -> YearMonth.from(t.getDate()),
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+        System.out.println("Income: " + income + "\nExpense: " + expense);
+
+        Map<YearMonth, Double> balance = new HashMap<>();
+
+        income.forEach((month, incomeAmount) -> {
+            double expenseAmount = expense.getOrDefault(month, 0.0);
+            balance.put(month, incomeAmount - expenseAmount);
+        });
+
+        expense.forEach(((month, expenseAmount) -> {
+            if(!balance.containsKey(month)){
+                balance.put(month, 0.0 - expenseAmount);
+            }
+        } ));
+
+        System.out.println("Income: " + income + "\nExpense: " + expense + "\n Balance: " + balance);
     }
 
     public void categoryWiseSummary() {
+        List<Transaction> transactionList = getTransactionList();
+        System.out.println(
+                transactionList.stream()
+                        .collect(Collectors.groupingBy(Transaction::getType))
+        );
     }
 
     public void currentBalance() {
+        double totalIncome = totalIncome();
+        double totalExpense = totalExpense();
+
+        double balance = totalIncome - totalExpense;
+        System.out.println(balance);
     }
 
-    public void totalExpense() {
+    public double totalExpense() {
+        List<Transaction> transactionList = getTransactionList();
+        return transactionList.stream()
+                .filter(t -> t.getType().equals(TransactionType.EXPENSE)).mapToDouble(Transaction::getAmount).sum();
     }
 
-    public void totalIncome() {
+    public double totalIncome() {
+        List<Transaction> transactionList = getTransactionList();
+        return transactionList.stream()
+                .filter(t-> t.getType().equals(TransactionType.INCOME)).mapToDouble(Transaction::getAmount).sum();
     }
 }
