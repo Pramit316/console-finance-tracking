@@ -4,8 +4,10 @@ import entity.Transaction;
 import entity.TransactionType;
 import exceptions.TransactionNotFoundException;
 
-import java.util.Comparator;
-import java.util.List;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReportService {
 
@@ -54,6 +56,14 @@ public class ReportService {
     }
 
     public void monthlySummary() {
+        List<Transaction> transactionList = getTransactionList();
+        System.out.println(
+                transactionList.stream()
+                        .collect(Collectors.groupingBy(
+                                t -> YearMonth.from(t.getDate()),
+                                Collectors.summingDouble(Transaction::getAmount)
+                        ))
+        );
     }
 
     public void categoryWiseSummary() {
