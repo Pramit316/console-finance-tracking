@@ -1,6 +1,9 @@
 package controller;
 
+import dto.MonthlySummary;
 import service.ReportService;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class ReportController {
@@ -34,7 +37,9 @@ public class ReportController {
 
             if(!sc.hasNextInt()){
                 System.out.println("Enter a valid number");
+                sc.nextLine();
                 pause();
+                continue;
             }
 
             int choice = sc.nextInt();
@@ -42,15 +47,15 @@ public class ReportController {
 
             switch (choice) {
                 case 1:
-                    reportService.totalIncome();
+                    System.out.println("Total Income: " + reportService.totalIncome());
                     break;
 
                 case 2:
-                    reportService.totalExpense();
+                    System.out.println("Total Expense: " + reportService.totalExpense());
                     break;
 
                 case 3:
-                    reportService.currentBalance();
+                    System.out.println("Current Balance: " + reportService.currentBalance());
                     break;
 
                 case 4:
@@ -58,21 +63,23 @@ public class ReportController {
                     break;
 
                 case 5:
-                    reportService.monthlySummary();
+                    printMonthlySummary();
                     break;
 
                 case 6:
-                    reportService.highestIncome();
+                    TransactionController.consolePrint(reportService.highestIncome());
+                    break;
 
                 case 7:
-                    reportService.highestExpense();
+                    TransactionController.consolePrint(reportService.highestExpense());
+                    break;
 
                 case 8:
-                    reportService.averageExpense();
+                    System.out.println("Average Expense: " + reportService.averageExpense());
                     break;
 
                 case 9:
-                    reportService.averageIncome();
+                    System.out.println("Average Income: " + reportService.averageIncome());
                     break;
 
                 case 10:
@@ -82,6 +89,34 @@ public class ReportController {
                     System.out.println("Invalid option! Try again.");
             }
         }
+    }
+
+    private void printMonthlySummary() {
+        List<MonthlySummary> summaries = reportService.monthlySummary();
+
+        if (summaries.isEmpty()) {
+            System.out.println("\nNo transactions found.");
+            return;
+        }
+
+        System.out.println("\n===============================================");
+        System.out.println("              MONTHLY SUMMARY");
+        System.out.println("===============================================");
+
+        System.out.printf("%-12s %-12s %-12s %-12s%n",
+                "Month", "Income", "Expense", "Balance");
+
+        System.out.println("-----------------------------------------------");
+
+        for (MonthlySummary summary : summaries) {
+            System.out.printf("%-12s %-12.2f %-12.2f %-12.2f%n",
+                    summary.getMonth(),
+                    summary.getIncome(),
+                    summary.getExpense(),
+                    summary.getBalance());
+        }
+
+        System.out.println("===============================================");
     }
 
     public void pause() {

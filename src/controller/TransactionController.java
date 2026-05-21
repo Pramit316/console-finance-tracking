@@ -294,7 +294,7 @@ public class TransactionController {
     }
 
     //single result in a table
-    public void consolePrint(Transaction t){
+    public static void consolePrint(Transaction t){
         System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
                 "ID", "TITLE", "AMOUNT", "TYPE", "DATE", "DESCRIPTION");
 

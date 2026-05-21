@@ -1,5 +1,6 @@
 package service;
 
+import dto.MonthlySummary;
 import entity.Transaction;
 import entity.TransactionType;
 import exceptions.TransactionNotFoundException;
@@ -55,7 +56,7 @@ public class ReportService {
                 .orElseThrow(() -> new TransactionNotFoundException("Could not find a transaction with Expense"));
     }
 
-    public void monthlySummary() {
+    public List<MonthlySummary> monthlySummary() {
         List<Transaction> transactionList = getTransactionList();
         Map<YearMonth, Double> income = transactionList.stream()
                 .filter(x -> x.getType().equals(TransactionType.INCOME))
@@ -86,7 +87,20 @@ public class ReportService {
             }
         } ));
 
-        System.out.println("Income: " + income + "\nExpense: " + expense + "\n Balance: " + balance);
+        List<MonthlySummary> summaries = new ArrayList<>();
+
+        balance.forEach((month, balanceAmount) -> {
+            double incomeAmount = income.getOrDefault(month, 0.0);
+            double expenseAmount = expense.getOrDefault(month, 0.0);
+
+            summaries.add(new MonthlySummary(month,
+               incomeAmount,
+               expenseAmount,
+               balanceAmount
+            ));
+        });
+
+        return summaries;
     }
 
     public void categoryWiseSummary() {
@@ -97,12 +111,12 @@ public class ReportService {
         );
     }
 
-    public void currentBalance() {
+    public double currentBalance() {
         double totalIncome = totalIncome();
         double totalExpense = totalExpense();
 
         double balance = totalIncome - totalExpense;
-        System.out.println(balance);
+        return balance;
     }
 
     public double totalExpense() {
