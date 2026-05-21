@@ -54,6 +54,11 @@ public class TransactionService {
         t.setType(transactionType);
     }
 
+    public void updateDate(int id, LocalDate date) {
+        Transaction transaction = findTransactionById(id);
+        transaction.setDate(date);
+    }
+
     public void updateDescription(int id, String description) {
         Transaction t = findTransactionById(id);
         t.setDescription(description);

@@ -3,12 +3,15 @@ package controller;
 import entity.Transaction;
 import entity.TransactionType;
 import exceptions.InvalidAmountException;
+import exceptions.InvalidDateException;
 import exceptions.InvalidTransactionTypeException;
 import exceptions.TransactionNotFoundException;
 import service.TransactionService;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class TransactionController {
@@ -53,7 +56,7 @@ public class TransactionController {
             t.setType(type == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
 
             System.out.println("Enter the date in yyyy-mm-dd: ");
-            LocalDate currentDate = LocalDate.parse(sc.nextLine());
+            LocalDate currentDate = parseDate(sc.nextLine());
             t.setDate(currentDate);
 
             System.out.print("Enter Description: ");
@@ -63,9 +66,19 @@ public class TransactionController {
             transactionService.addTransaction(t);
 
             System.out.println("\nTransaction added successfully!");
+        } catch (InvalidDateException e){
+            System.out.println("There was something wrong. \n" + e);
         } catch (Exception e) {
             System.out.println("\nSomething went wrong. Please enter valid input");
             pause();
+        }
+    }
+
+    private LocalDate parseDate(String s) {
+        try{
+            return LocalDate.parse(s);
+        } catch (DateTimeException e){
+            throw new InvalidDateException("Invalid date format. Please enter date in yyyy-MM-dd format.");
         }
     }
 
@@ -198,8 +211,9 @@ public class TransactionController {
            System.out.println("2. Amount");
            System.out.println("3. Type");
            System.out.println("4. Description");
-           System.out.println("5. Update Full Transaction");
-           System.out.println("6. Cancel");
+           System.out.println("5. Update Date");
+           System.out.println("6. Update Full Transaction");
+           System.out.println("7. Cancel");
            System.out.print("Enter your choice: ");
 
            int updateChoice = sc.nextInt();
@@ -235,6 +249,11 @@ public class TransactionController {
                    break;
 
                case 5:
+                   LocalDate date = LocalDate.parse(sc.nextLine());
+                   transactionService.updateDate(id, date);
+                   break;
+
+               case 6:
                    updateFullTransaction(id);
            }
 
@@ -276,7 +295,8 @@ public class TransactionController {
 
         t.setType(type == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
 
-        LocalDate currentDate = LocalDate.now();
+        System.out.print("Enter the date in yyyy-MM-dd format: ");
+        LocalDate currentDate = parseDate(sc.nextLine());
         t.setDate(currentDate);
 
         System.out.print("Enter Description: ");

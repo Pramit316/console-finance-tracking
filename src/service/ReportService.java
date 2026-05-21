@@ -5,7 +5,6 @@ import entity.Transaction;
 import entity.TransactionType;
 import exceptions.TransactionNotFoundException;
 
-import java.time.Month;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -103,13 +102,11 @@ public class ReportService {
         return summaries;
     }
 
-    public void categoryWiseSummary() {
-        List<Transaction> transactionList = getTransactionList();
-        System.out.println(
-                transactionList.stream()
-                        .collect(Collectors.groupingBy(Transaction::getType))
-        );
-    }
+//    public Map<TransactionType, List<Transaction>> categoryWiseSummary() {
+//        List<Transaction> transactionList = getTransactionList();
+//        return transactionList.stream()
+//                .collect(Collectors.groupingBy(Transaction::getType));
+//    }
 
     public double currentBalance() {
         double totalIncome = totalIncome();
