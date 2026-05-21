@@ -1,10 +1,10 @@
 package service;
 
+import dto.MonthlySummary;
 import entity.Transaction;
 import entity.TransactionType;
 import exceptions.TransactionNotFoundException;
 
-import java.time.Month;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -55,26 +55,76 @@ public class ReportService {
                 .orElseThrow(() -> new TransactionNotFoundException("Could not find a transaction with Expense"));
     }
 
-    public void monthlySummary() {
+    public List<MonthlySummary> monthlySummary() {
         List<Transaction> transactionList = getTransactionList();
-        System.out.println(
-                transactionList.stream()
-                        .collect(Collectors.groupingBy(
-                                t -> YearMonth.from(t.getDate()),
-                                Collectors.summingDouble(Transaction::getAmount)
-                        ))
-        );
+        Map<YearMonth, Double> income = transactionList.stream()
+                .filter(x -> x.getType().equals(TransactionType.INCOME))
+                .collect(Collectors.groupingBy(
+                        t -> YearMonth.from(t.getDate()),
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+        Map<YearMonth, Double> expense = transactionList.stream()
+                .filter(x -> x.getType().equals(TransactionType.EXPENSE))
+                .collect(Collectors.groupingBy(
+                        t -> YearMonth.from(t.getDate()),
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+        System.out.println("Income: " + income + "\nExpense: " + expense);
+
+        Map<YearMonth, Double> balance = new HashMap<>();
+
+        income.forEach((month, incomeAmount) -> {
+            double expenseAmount = expense.getOrDefault(month, 0.0);
+            balance.put(month, incomeAmount - expenseAmount);
+        });
+
+        expense.forEach(((month, expenseAmount) -> {
+            if(!balance.containsKey(month)){
+                balance.put(month, 0.0 - expenseAmount);
+            }
+        } ));
+
+        List<MonthlySummary> summaries = new ArrayList<>();
+
+        balance.forEach((month, balanceAmount) -> {
+            double incomeAmount = income.getOrDefault(month, 0.0);
+            double expenseAmount = expense.getOrDefault(month, 0.0);
+
+            summaries.add(new MonthlySummary(month,
+               incomeAmount,
+               expenseAmount,
+               balanceAmount
+            ));
+        });
+
+        return summaries;
     }
 
-    public void categoryWiseSummary() {
+//    public Map<TransactionType, List<Transaction>> categoryWiseSummary() {
+//        List<Transaction> transactionList = getTransactionList();
+//        return transactionList.stream()
+//                .collect(Collectors.groupingBy(Transaction::getType));
+//    }
+
+    public double currentBalance() {
+        double totalIncome = totalIncome();
+        double totalExpense = totalExpense();
+
+        double balance = totalIncome - totalExpense;
+        return balance;
     }
 
-    public void currentBalance() {
+    public double totalExpense() {
+        List<Transaction> transactionList = getTransactionList();
+        return transactionList.stream()
+                .filter(t -> t.getType().equals(TransactionType.EXPENSE)).mapToDouble(Transaction::getAmount).sum();
     }
 
-    public void totalExpense() {
-    }
-
-    public void totalIncome() {
+    public double totalIncome() {
+        List<Transaction> transactionList = getTransactionList();
+        return transactionList.stream()
+                .filter(t-> t.getType().equals(TransactionType.INCOME)).mapToDouble(Transaction::getAmount).sum();
     }
 }
