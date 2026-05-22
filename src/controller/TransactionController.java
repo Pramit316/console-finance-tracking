@@ -212,7 +212,7 @@ public class TransactionController {
         int id = sc.nextInt();
         sc.nextLine();
 
-        // transactionService.deleteTransaction(id);
+        transactionService.deleteTransaction(id);
 
         System.out.println("\nDelete request received for transaction ID: " + id);
     }

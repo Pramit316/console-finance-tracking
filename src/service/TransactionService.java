@@ -128,4 +128,9 @@ public class TransactionService {
     public List<Transaction> searchByDate(LocalDate date) {
         return transactionList.stream().filter(x-> x.getDate().equals(date)).toList();
     }
+
+    public void deleteTransaction(int id) {
+        Transaction transaction = findTransactionById(id);
+        transactionList.remove(transaction);
+    }
 }
