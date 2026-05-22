@@ -1,6 +1,7 @@
 package service;
 
 import entity.Transaction;
+import entity.TransactionCategory;
 import entity.TransactionType;
 
 import java.io.*;
@@ -74,13 +75,14 @@ public class FileService {
                 t.getAmount()+ "," +
                 t.getType()+ "," +
                 t.getDate()+ "," +
+                t.getCategory() + "," +
                 t.getDescription();
     }
 
     private Transaction convertCsvToTransaction(String line) {
         String[] parts = line.split(",");
 
-        if(parts.length != 6){
+        if(parts.length != 7){
             throw new IllegalArgumentException("Invalid CSV format. Expected 6 values but found " + parts.length);
         }
 
@@ -90,7 +92,8 @@ public class FileService {
         t.setAmount(Double.parseDouble(parts[2]));
         t.setType(TransactionType.valueOf(parts[3]));
         t.setDate(LocalDate.parse(parts[4]));
-        t.setDescription(parts[5]);
+        t.setCategory(TransactionCategory.valueOf(parts[5]));
+        t.setDescription(parts[6]);
 
         return t;
     }

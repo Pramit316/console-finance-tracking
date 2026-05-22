@@ -1,6 +1,7 @@
 package service;
 
 import entity.Transaction;
+import entity.TransactionCategory;
 import entity.TransactionType;
 import exceptions.InvalidAmountException;
 import exceptions.TransactionNotFoundException;
@@ -75,6 +76,11 @@ public class TransactionService {
         transaction.setDate(date);
     }
 
+    public void updateCategory(int id, TransactionCategory selectedCategory) {
+        Transaction transaction = findTransactionById(id);
+        transaction.setCategory(selectedCategory);
+    }
+
     public void updateDescription(int id, String description) {
         Transaction t = findTransactionById(id);
         t.setDescription(description);
@@ -96,6 +102,10 @@ public class TransactionService {
 
     public List<Transaction> searchByType(TransactionType type) {
         return transactionList.stream().filter(x -> x.getType().equals(type)).toList();
+    }
+
+    public List<Transaction> searchByCategory(TransactionCategory category) {
+        return transactionList.stream().filter(t -> t.getCategory().equals(category)).toList();
     }
 
     public List<Transaction> sortedByAmountScreen() {

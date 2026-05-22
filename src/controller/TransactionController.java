@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Transaction;
+import entity.TransactionCategory;
 import entity.TransactionType;
 import exceptions.InvalidAmountException;
 import exceptions.InvalidDateException;
@@ -18,6 +19,7 @@ public class TransactionController {
 
     private final Scanner sc = new Scanner(System.in);
     private final TransactionService transactionService;
+    TransactionCategory[] categories = TransactionCategory.values();
 
     public TransactionController(TransactionService transactionService){
         this.transactionService = transactionService;
@@ -35,17 +37,35 @@ public class TransactionController {
             System.out.println("           ADD NEW TRANSACTION");
             System.out.println("----------------------------------------");
 
+            //generated id
             System.out.println("Generated Transaction ID: " + id);
 
+            //tile section
             System.out.print("Enter Title: ");
             String title = sc.nextLine();
             t.setTitle(title);
 
+            //amount section
             System.out.print("Enter Amount: ");
             double amount = sc.nextDouble();
             sc.nextLine();
             t.setAmount(amount);
 
+            //category section
+            System.out.println("Select Category: ");
+
+            for(int i = 0; i<categories.length; i++){
+                System.out.println((i+1) + ". " + categories[i]);
+            }
+
+            int choice = sc.nextInt();
+            sc.nextLine();
+
+            TransactionCategory selectedCategory = categories[choice -1];
+            System.out.println("Selected: " + selectedCategory);
+            t.setCategory(selectedCategory);
+
+            //type section
             System.out.println("Select Type: ");
             System.out.println("1. Income");
             System.out.println("2. Expense");
@@ -55,10 +75,12 @@ public class TransactionController {
 
             t.setType(type == 1 ? TransactionType.INCOME : TransactionType.EXPENSE);
 
+            //date section
             System.out.println("Enter the date in yyyy-mm-dd: ");
             LocalDate currentDate = parseDate(sc.nextLine());
             t.setDate(currentDate);
 
+            //description section
             System.out.print("Enter Description: ");
             String description = sc.nextLine();
             t.setDescription(description);
@@ -212,8 +234,9 @@ public class TransactionController {
            System.out.println("3. Type");
            System.out.println("4. Description");
            System.out.println("5. Update Date");
-           System.out.println("6. Update Full Transaction");
-           System.out.println("7. Cancel");
+           System.out.println("6. Update Category");
+           System.out.println("7. Update Full Transaction");
+           System.out.println("8. Cancel");
            System.out.print("Enter your choice: ");
 
            int updateChoice = sc.nextInt();
@@ -254,6 +277,20 @@ public class TransactionController {
                    break;
 
                case 6:
+                   System.out.println("Select Category: ");
+
+                   for(int i = 0; i<categories.length; i++){
+                       System.out.println((i+1) + ". " + categories[i]);
+                   }
+
+                   int choice = sc.nextInt();
+                   sc.nextLine();
+
+                   TransactionCategory selectedCategory = categories[choice -1];
+                   System.out.println("Selected: " + selectedCategory);
+                   transactionService.updateCategory(id, selectedCategory);
+
+               case 7:
                    updateFullTransaction(id);
            }
 
@@ -313,35 +350,38 @@ public class TransactionController {
         sc.nextLine();
     }
 
-    //single result in a table
-    public static void consolePrint(Transaction t){
-        System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
-                "ID", "TITLE", "AMOUNT", "TYPE", "DATE", "DESCRIPTION");
+    // Single result in a table
+    public static void consolePrint(Transaction t) {
+        System.out.printf("%-5s %-25s %-15s %-15s %-20s %-15s %-50s%n",
+                "ID", "TITLE", "AMOUNT", "TYPE", "CATEGORY", "DATE", "DESCRIPTION");
 
-        System.out.println("--------------------------------------------------------------------------------");
-        System.out.printf("%-5d %-15s %-10.2f %-15s %-15s %-20s%n",
+        System.out.println("---------------------------------------------------------------------------------------------------------------");
+
+        System.out.printf("%-5d %-25s %-15.2f %-15s %-20s %-15s %-50s%n",
                 t.getId(),
                 t.getTitle(),
                 t.getAmount(),
                 t.getType(),
+                t.getCategory(),
                 t.getDate(),
                 t.getDescription());
     }
 
 
-    //List of results in a table
-    public static void consolePrint(List<Transaction> transactionList){
-        System.out.printf("%-5s %-15s %-10s %-15s %-15s %-20s%n",
-                "ID", "TITLE", "AMOUNT", "TYPE", "DATE", "DESCRIPTION");
+    // List of results in a table
+    public static void consolePrint(List<Transaction> transactionList) {
+        System.out.printf("%-5s %-25s %-15s %-15s %-20s %-15s %-50s%n",
+                "ID", "TITLE", "AMOUNT", "TYPE", "CATEGORY", "DATE", "DESCRIPTION");
 
-        System.out.println("--------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------");
 
         for (Transaction t : transactionList) {
-            System.out.printf("%-5d %-15s %-10.2f %-15s %-15s %-20s%n",
+            System.out.printf("%-5d %-25s %-15.2f %-15s %-20s %-15s %-50s%n",
                     t.getId(),
                     t.getTitle(),
                     t.getAmount(),
                     t.getType(),
+                    t.getCategory(),
                     t.getDate(),
                     t.getDescription());
         }

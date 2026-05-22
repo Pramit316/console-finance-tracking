@@ -7,7 +7,7 @@ public class Transaction {
     private String title;
     private double amount;
     private TransactionType type;
-    private String category;
+    private TransactionCategory category;
     private LocalDate date;
     private String description;
 
@@ -56,11 +56,11 @@ public class Transaction {
         this.type = type;
     }
 
-    public String getCategory() {
+    public TransactionCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(TransactionCategory category) {
         this.category = category;
     }
 
