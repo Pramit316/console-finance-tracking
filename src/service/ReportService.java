@@ -1,7 +1,9 @@
 package service;
 
+import dto.CategoryDto;
 import dto.MonthlySummary;
 import entity.Transaction;
+import entity.TransactionCategory;
 import entity.TransactionType;
 import exceptions.TransactionNotFoundException;
 
@@ -102,11 +104,58 @@ public class ReportService {
         return summaries;
     }
 
-//    public Map<TransactionType, List<Transaction>> categoryWiseSummary() {
-//        List<Transaction> transactionList = getTransactionList();
-//        return transactionList.stream()
-//                .collect(Collectors.groupingBy(Transaction::getType));
-//    }
+    public List<CategoryDto> categoryWiseSummary() {
+        List<Transaction> transactionList = getTransactionList();
+        List<CategoryDto> categoryDtos = new ArrayList<>();
+
+        Map<TransactionCategory, Double> balance = new HashMap<>();
+
+        Map<TransactionCategory, Double> income = transactionList.stream()
+                .filter(t -> t.getType().equals(TransactionType.INCOME))
+                .collect(Collectors.groupingBy(
+                        Transaction::getCategory,
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+
+        Map<TransactionCategory, Double> expense = transactionList.stream()
+                .filter(t -> t.getType().equals(TransactionType.EXPENSE))
+                .collect(Collectors.groupingBy(
+                        Transaction::getCategory,
+                        Collectors.summingDouble(Transaction::getAmount)
+                ));
+
+        income.forEach((category, incomeAmount) -> {
+            balance.put(category, incomeAmount - expense.getOrDefault(category, 0.0));
+        });
+
+        expense.forEach((category, expenseAmount)->{
+            if(!balance.containsKey(category)){
+                balance.put(category, 0.0 - expenseAmount);
+            }
+        });
+
+        System.out.println("Total income: \n" + income);
+
+        System.out.println("Total outcome: \n" + expense);
+        System.out.println("Balance: \n" + balance);
+
+        balance.forEach((category, finalBalance) -> {
+            final double finalIncome = income.getOrDefault(category, 0.0);
+            final double finalExpense = expense.getOrDefault(category, 0.0);
+
+            CategoryDto categoryDto = new CategoryDto();
+
+            categoryDto.setCategory(category);
+            categoryDto.setIncome(finalIncome);
+            categoryDto.setExpense(finalExpense);
+            categoryDto.setBalance(finalBalance);
+
+            categoryDtos.add(categoryDto);
+        });
+
+        return categoryDtos;
+    }
 
     public double currentBalance() {
         double totalIncome = totalIncome();

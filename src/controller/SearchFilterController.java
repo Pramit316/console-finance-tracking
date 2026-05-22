@@ -1,6 +1,7 @@
 package controller;
 
 import entity.Transaction;
+import entity.TransactionCategory;
 import entity.TransactionType;
 import service.TransactionService;
 
@@ -11,6 +12,7 @@ public class SearchFilterController {
 
     private final Scanner sc = new Scanner(System.in);
     TransactionService transactionService;
+    TransactionCategory[] categoryList = TransactionCategory.values();
 
     public SearchFilterController(TransactionService transactionService){
         this.transactionService = transactionService;
@@ -127,7 +129,14 @@ public class SearchFilterController {
     }
 
     private void searchByCategoryScreen() {
+        System.out.println("Select the category: ");
 
+        for(int i = 0; i < categoryList.length; i++){
+            System.out.println((i+1) + ". " + categoryList[i]);
+        }
+
+        int choice = sc.nextInt();
+        TransactionController.consolePrint(transactionService.searchByCategory(categoryList[choice-1]));
     }
 
     public void pause() {

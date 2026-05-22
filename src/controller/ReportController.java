@@ -1,5 +1,6 @@
 package controller;
 
+import dto.CategoryDto;
 import dto.MonthlySummary;
 import exceptions.TransactionNotFoundException;
 import service.ReportService;
@@ -64,7 +65,7 @@ public class ReportController {
                         break;
 
                     case 4:
-                        System.out.println("Feature comming soon!");
+                        printCategoryWiseSummary();
                         pause();
                         break;
 
@@ -103,6 +104,34 @@ public class ReportController {
         } catch (TransactionNotFoundException e) {
             System.out.println("There was an error!!: \n" + e);
         }
+    }
+
+    private void printCategoryWiseSummary() {
+        List<CategoryDto> categoryList = reportService.categoryWiseSummary();
+
+        if (categoryList.isEmpty()) {
+            System.out.println("\nNo transactions found.");
+            return;
+        }
+
+        System.out.println("\n===============================================");
+        System.out.println("              CATEGORY WISE SUMMARY");
+        System.out.println("===============================================");
+
+        System.out.printf("%-12s %-12s %-12s %-12s%n",
+                "Category", "Income", "Expense", "Balance");
+
+        System.out.println("-----------------------------------------------");
+
+        for (CategoryDto categoryDto : categoryList) {
+            System.out.printf("%-12s %-12.2f %-12.2f %-12.2f%n",
+                    categoryDto.getCategory(),
+                    categoryDto.getIncome(),
+                    categoryDto.getExpense(),
+                    categoryDto.getBalance());
+        }
+
+        System.out.println("===============================================");
     }
 
     private void printMonthlySummary() {
