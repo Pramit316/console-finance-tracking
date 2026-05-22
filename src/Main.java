@@ -2,6 +2,7 @@ import controller.ReportController;
 import controller.SearchFilterController;
 import controller.TransactionController;
 import entity.Transaction;
+import service.AutoSaveService;
 import service.FileService;
 import service.ReportService;
 import service.TransactionService;
@@ -27,6 +28,9 @@ public class Main {
 
         //updates the id to match with already saved data id
         transactionService.updateNextId();
+
+        AutoSaveService autoSaveService = new AutoSaveService(fileService, transactionService);
+        autoSaveService.startAutoSave();
 
         TransactionController transactionController = new TransactionController(transactionService);
         SearchFilterController searchFilterController = new SearchFilterController(transactionService);
@@ -78,6 +82,8 @@ public class Main {
                     if(option.equalsIgnoreCase("y")){
                         fileService.saveTransactions(transactionService.getAllTransactions());
                     }
+
+                    autoSaveService.stopAutoSave();
 
                     System.out.println("\nThank you for using Console Finance Tracker.");
                     System.out.println("Exiting...");
