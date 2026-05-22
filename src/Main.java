@@ -1,25 +1,36 @@
 import controller.ReportController;
 import controller.SearchFilterController;
 import controller.TransactionController;
+import entity.Transaction;
 import service.FileService;
 import service.ReportService;
 import service.TransactionService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
-    static TransactionService transactionService = new TransactionService();
-    static ReportService reportService = new ReportService(transactionService);
-    static FileService fileService = new FileService();
-
-    static TransactionController transactionController = new TransactionController(transactionService);
-    static SearchFilterController searchFilterController = new SearchFilterController(transactionService);
-    static ReportController reportController = new ReportController(reportService);
-
     public static void main(String[] args) {
+
+        TransactionService transactionService = new TransactionService();
+        ReportService reportService = new ReportService(transactionService);
+        FileService fileService = new FileService();
+
+        //loads the currently saved transaction
+        List<Transaction> loadedTransaction = fileService.loadTransaction();
+
+        //sets the currently saved transaction to in the transaction service
+        transactionService.setTransactionList(loadedTransaction);
+
+        //updates the id to match with already saved data id
+        transactionService.updateNextId();
+
+        TransactionController transactionController = new TransactionController(transactionService);
+        SearchFilterController searchFilterController = new SearchFilterController(transactionService);
+        ReportController reportController = new ReportController(reportService);
 
         boolean running = true;
 

@@ -16,6 +16,22 @@ public class TransactionService {
     private List<Transaction> transactionList = new ArrayList<>();
     private int nextId = 1;
 
+    //Uses this method to set the list by reading from the file
+    public void setTransactionList(List<Transaction> transactionList){
+        this.transactionList = transactionList;
+    }
+
+    //Used to initialize the nextId based on the saved data
+    public void updateNextId(){
+        int maxId = transactionList.stream()
+                .mapToInt(Transaction::getId)
+                .max()
+                .orElse(0);
+
+        nextId = maxId + 1;
+    }
+
+    //Makes the next id
     public int generateId() {
         return nextId++;
     }
