@@ -32,12 +32,17 @@ public class TransactionService {
         nextId = maxId + 1;
     }
 
+    //getting a snapshot of the current transaction list
+    public synchronized List<Transaction> getTransactionSnapshot(){
+        return new ArrayList<>(transactionList);
+    }
+
     //Makes the next id
     public int generateId() {
         return nextId++;
     }
 
-    public void addTransaction(Transaction transaction){
+    public synchronized void addTransaction(Transaction transaction){
         if(transaction.getAmount() <= 0){
             throw new InvalidAmountException("Amount must be greater than zero.");
         }
