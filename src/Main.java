@@ -1,6 +1,7 @@
 import controller.ReportController;
 import controller.SearchFilterController;
 import controller.TransactionController;
+import service.FileService;
 import service.ReportService;
 import service.TransactionService;
 
@@ -12,6 +13,7 @@ public class Main {
 
     static TransactionService transactionService = new TransactionService();
     static ReportService reportService = new ReportService(transactionService);
+    static FileService fileService = new FileService();
 
     static TransactionController transactionController = new TransactionController(transactionService);
     static SearchFilterController searchFilterController = new SearchFilterController(transactionService);
@@ -58,6 +60,14 @@ public class Main {
                     break;
 
                 case 5:
+                    System.out.println("Do you want to save before exiting? (y/n)");
+                    String option = sc.next();
+                    sc.nextLine();
+
+                    if(option.equalsIgnoreCase("y")){
+                        fileService.saveTransactions(transactionService.getAllTransactions());
+                    }
+
                     System.out.println("\nThank you for using Console Finance Tracker.");
                     System.out.println("Exiting...");
                     running = false;
