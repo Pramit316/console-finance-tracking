@@ -1,9 +1,24 @@
-# Console Finance Tracker
+<div align="center">
 
-A console-based personal finance tracking application built using **Core Java**.  
-This project is designed as a Java learning project to practise object-oriented programming, collections, exception handling, file handling, Java Streams, and basic multithreading in a practical way.
+# Console Finance Tracker 💰
 
-The application allows users to add, view, update, search, filter, and generate reports for income and expense transactions directly from the console. Transaction data is saved into a CSV file so that records do not disappear after closing the program.
+A console-based personal finance tracking application built using **Core Java**.
+
+This project was created to practise Java concepts like **OOP**, **Collections**, **File Handling**, **Streams API**, **Exception Handling**, and basic **Multithreading** through a practical project.
+
+Transaction data is stored in a CSV file so records remain saved even after closing the application.
+
+<br>
+
+![Java](https://img.shields.io/badge/Java-Core%20Java-orange?style=for-the-badge&logo=openjdk)
+![CSV](https://img.shields.io/badge/Storage-CSV%20File-blue?style=for-the-badge)
+![Streams](https://img.shields.io/badge/Java-Streams-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Project-Active-success?style=for-the-badge)
+
+</div>
+
+---
+
 
 ---
 
