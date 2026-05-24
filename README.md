@@ -1,19 +1,20 @@
+<div align="center">
+
 # 💸 Console Finance Tracker
 
-A modern console-based finance tracking application built with **Core Java**.
+Simple finance tracking application built with Java.
 
-Track income and expenses, manage transactions, generate reports, and persist data using CSV storage — all while practising real-world Java concepts like OOP, Streams, File Handling, Collections, Exception Handling, and Multithreading.
+Manage income and expenses, store transactions in CSV files, and practise real-world Java concepts like OOP, Streams, File Handling, Collections, and Exception Handling.
 
 <br>
 
-<img src="https://skillicons.dev/icons?i=java" height="55" alt="Java"/>
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=java,git,github" />
+</p>
 
-<br><br>
-
-![Java](https://img.shields.io/badge/Java-17+-1f2937?style=flat-square&logo=openjdk)
-![Storage](https://img.shields.io/badge/Storage-CSV-2563eb?style=flat-square)
-![Streams](https://img.shields.io/badge/Streams-API-059669?style=flat-square)
-![Status](https://img.shields.io/badge/Status-Active-7c3aed?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-22c55e?style=flat-square)
+![Java](https://img.shields.io/badge/Java-Core%20Java-f97316?style=flat-square)
+![Storage](https://img.shields.io/badge/Storage-CSV-3b82f6?style=flat-square)
 
 </div>
 
