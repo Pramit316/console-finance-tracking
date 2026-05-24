@@ -1,24 +1,21 @@
-<div align="center">
+# 💸 Console Finance Tracker
 
-# Console Finance Tracker 💰
+A modern console-based finance tracking application built with **Core Java**.
 
-A console-based personal finance tracking application built using **Core Java**.
-
-This project was created to practise Java concepts like **OOP**, **Collections**, **File Handling**, **Streams API**, **Exception Handling**, and basic **Multithreading** through a practical project.
-
-Transaction data is stored in a CSV file so records remain saved even after closing the application.
+Track income and expenses, manage transactions, generate reports, and persist data using CSV storage — all while practising real-world Java concepts like OOP, Streams, File Handling, Collections, Exception Handling, and Multithreading.
 
 <br>
 
-![Java](https://img.shields.io/badge/Java-Core%20Java-orange?style=for-the-badge&logo=openjdk)
-![CSV](https://img.shields.io/badge/Storage-CSV%20File-blue?style=for-the-badge)
-![Streams](https://img.shields.io/badge/Java-Streams-green?style=for-the-badge)
-![Status](https://img.shields.io/badge/Project-Active-success?style=for-the-badge)
+<img src="https://skillicons.dev/icons?i=java" height="55" alt="Java"/>
+
+<br><br>
+
+![Java](https://img.shields.io/badge/Java-17+-1f2937?style=flat-square&logo=openjdk)
+![Storage](https://img.shields.io/badge/Storage-CSV-2563eb?style=flat-square)
+![Streams](https://img.shields.io/badge/Streams-API-059669?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-7c3aed?style=flat-square)
 
 </div>
-
----
-
 
 ---
 
