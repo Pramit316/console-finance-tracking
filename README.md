@@ -4,7 +4,7 @@
 
 Simple finance tracking application built with Java.
 
-Manage income and expenses, store transactions in CSV files, and practise real-world Java concepts like OOP, Streams, File Handling, Collections, and Exception Handling.
+Manage income and expenses, store transactions in CSV files, and practise real-world Java concepts like OOP, Streams, File Handling, Collections, Multithreading and Exception Handling.
 
 <br>
 
